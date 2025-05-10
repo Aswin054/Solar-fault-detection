@@ -40,10 +40,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load model
-model_path = os.path.join(os.path.dirname(__file__), 'model/final_mobilenet_fault_model.keras')
-model = load_model(model_path)
-print("✅ Model loaded successfully")
+# Path handling for different deployment scenarios
+model_dir = os.path.join(os.path.dirname(__file__), 'model')
+
+# Try loading in this order:
+# 1. First attempt to load the converted SavedModel format
+# 2. Fall back to .keras format
+# 3. Fall back to .h5 format (if you have older models)
+
+model = None
+load_attempts = [
+    os.path.join(model_dir, 'converted_model'),  # SavedModel directory
+    os.path.join(model_dir, 'converted_model.keras'),  # Keras 3 format
+    os.path.join(model_dir, 'final_mobilenet_fault_model.keras'),  # Original
+    os.path.join(model_dir, 'final_mobilenet_fault_model.h5')  # Legacy format
+]
+
+for attempt in load_attempts:
+    try:
+        model = load_model(attempt)
+        print(f"✅ Model loaded successfully from: {attempt}")
+        break
+    except Exception as e:
+        print(f"⚠️ Failed to load from {attempt}: {str(e)}")
+
+if model is None:
+    raise FileNotFoundError("❌ Could not load model from any known location or format")
 
 CLASS_LABELS = [
     "Bird_dropping",
