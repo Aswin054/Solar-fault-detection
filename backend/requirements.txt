@@ -1,10 +1,22 @@
+# Core Requirements
 fastapi==0.109.1
 uvicorn==0.27.0
 python-multipart==0.0.6
+jinja2==3.1.3
+
+# TensorFlow Stack (pinned for compatibility)
 tensorflow==2.15.0
-numpy==1.26.3
-opencv-python==4.9.0.80
+keras==2.15.0
+protobuf==3.20.3  # Critical for model serialization
+
+# Image Processing
+opencv-python-headless==4.9.0.80  # Headless version for server use
+pillow==10.1.0
+
+# PDF Generation
 reportlab==4.1.0
-Pillow==10.1.0
-Jinja2==3.1.3
+
+# Additional Utilities
 python-dotenv==1.0.0
+numpy==1.23.5  # Specific version that works with TF 2.15
+h5py==3.10.0  # Required for model loading
