@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Fault Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <i class="fas fa-solar-panel logo-icon"></i>
+                    <h1>AI Solar<span>Fault Detection</span></h1>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="tab-btn active" id="singleTabBtn">
+                        <i class="fas fa-image"></i> Single Analysis
+                    </button>
+                    <button class="tab-btn" id="batchTabBtn">
+                        <i class="fas fa-images"></i> Batch Analysis
+                    </button>
+                    <button class="tab-btn" id="historyTabBtn">
+                        <i class="fas fa-history"></i> History
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Single Analysis Section -->
+            <section class="content-section active" id="singleSection">
+                <div class="upload-container">
+                    <div class="upload-card">
+                        <div class="upload-header">
+                            <h2><i class="fas fa-upload"></i> Upload Solar Panel Image</h2>
+                            <p>Analyze a single solar panel image for potential faults</p>
+                        </div>
+                        <div class="upload-body">
+                            <div class="drop-area" id="dropArea">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <h3>Drag & Drop Your Image Here</h3>
+                                <p>or</p>
+                                <button class="btn primary-btn" id="uploadBtn">
+                                    <i class="fas fa-folder-open"></i> Browse Files
+                                </button>
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="file-info" id="fileInfo"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-container" id="resultsSection" style="display: none;">
+                    <div class="results-card">
+                        <div class="results-header">
+                            <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                            <div class="status-container">
+                                <span class="status-badge" id="statusBadge">Normal</span>
+                            </div>
+                        </div>
+                        <div class="results-body">
+                            <div class="image-comparison">
+                                <div class="image-box">
+                                    <h3>Original Image</h3>
+                                    <div class="image-wrapper">
+                                        <img id="originalImage" src="" alt="Original solar panel image">
+                                    </div>
+                                </div>
+                                <div class="image-box">
+                                    <h3>Heatmap Analysis</h3>
+                                    <div class="image-wrapper">
+                                        <img id="heatmapImage" src="" alt="Heatmap analysis">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="results-details">
+                                <div class="detail-card">
+                                    <h3><i class="fas fa-diagnoses"></i> Fault Diagnosis</h3>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Fault Type:</span>
+                                        <span class="detail-value" id="faultType">None detected</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Confidence:</span>
+                                        <span class="detail-value" id="confidence">100%</span>
+                                    </div>
+                                </div>
+                                <div class="detail-card">
+                                    <h3><i class="fas fa-lightbulb"></i> Recommendation</h3>
+                                    <p id="recommendation">No action required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-footer">
+                            <button class="btn secondary-btn" id="analyzeAnotherBtn">
+                                <i class="fas fa-redo"></i> Analyze Another
+                            </button>
+                            <button class="btn primary-btn" id="downloadReportBtn">
+                                <i class="fas fa-file-pdf"></i> Download Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Batch Analysis Section -->
+            <section class="content-section" id="batchSection">
+                <div class="upload-container">
+                    <div class="upload-card">
+                        <div class="upload-header">
+                            <h2><i class="fas fa-upload"></i> Upload Multiple Images</h2>
+                            <p>Analyze multiple solar panel images simultaneously</p>
+                        </div>
+                        <div class="upload-body">
+                            <div class="drop-area" id="batchDropArea">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <h3>Drag & Drop Your Images Here</h3>
+                                <p>or</p>
+                                <button class="btn primary-btn" id="batchUploadBtn">
+                                    <i class="fas fa-folder-open"></i> Browse Files
+                                </button>
+                                <input type="file" id="batchFileInput" accept="image/*" multiple style="display: none;">
+                            </div>
+                            <div class="file-info" id="batchFileInfo"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Batch Results Section -->
+                <div class="results-container" id="batchResultsSection" style="display: none;">
+                    <div class="results-card">
+                        <div class="results-header">
+                            <h2><i class="fas fa-chart-pie"></i> Batch Analysis Summary</h2>
+                            <div class="summary-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Images</span>
+                                    <span class="stat-value" id="totalImages">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Normal</span>
+                                    <span class="stat-value normal" id="normalImages">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Faulty</span>
+                                    <span class="stat-value warning" id="faultyImages">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-body">
+                            <div class="results-grid" id="resultsGrid">
+                                <!-- Results will be inserted here dynamically -->
+                            </div>
+                        </div>
+                        <div class="results-footer">
+                            <button class="btn secondary-btn" id="analyzeAnotherBatchBtn">
+                                <i class="fas fa-redo"></i> Analyze Another Batch
+                            </button>
+                            <button class="btn primary-btn" id="downloadBatchReportBtn">
+                                <i class="fas fa-file-pdf"></i> Download Batch Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="content-section" id="historySection">
+                <div class="history-container">
+                    <div class="history-header">
+                        <h2><i class="fas fa-history"></i> Analysis History</h2>
+                        <button class="btn danger-btn" id="clearHistoryBtn">
+                            <i class="fas fa-trash"></i> Clear History
+                        </button>
+                    </div>
+                    <div class="history-content" id="historyContainer">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h3>No Analysis History Yet</h3>
+                            <p>Your analyzed images will appear here for future reference</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Analyzing solar panel image...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+</body>
+</html>
